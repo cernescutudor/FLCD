@@ -1,0 +1,21 @@
+begin{
+
+	int _n;
+	int _i;
+	char _j = 'a'
+	_i = 2;
+	bool _isPrime;
+	_isPrime = true;
+	readInt(_n);
+	int k;
+
+	while ( _i < _n ) {
+		_i = _i + 1;
+		if ( _n % _i == 0 ) {
+			_isPrime = false;
+		}
+	}
+	
+	print(_isPrime);
+
+}end;

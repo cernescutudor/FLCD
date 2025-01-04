@@ -1,0 +1,38 @@
+N = S Program Block StatementList Statement DeclStmt Type Identifier IdentifierTail AssignStmt Expression ExpressionTail Operator Term TermTail Factor Constant Integer NonZeroDigit DigitSequence Digit DigitSequence Boolean Char Character IfStmt Condition Relation WhileStmt InputStmt OutputStmt Letter ArrayDeclStmt
+E = a b c d e f g h i j k l m n o p q r s t u v w x y z A B C D E F G H I J K L M N O P Q R S T U V W X Y Z 0 1 2 3 4 5 6 7 8 9 _ + - * % / = < > == != >= <= ! ; , ( ) { } [ ] ' true false int bool char if else while begin end readInt readChar readBool print
+S = S
+P = 
+S -> Program
+Program -> begin Block end
+Block -> { StatementList }
+StatementList -> Statement ; StatementList | epsilon
+Statement -> DeclStmt | AssignStmt | InputStmt | OutputStmt | IfStmt | WhileStmt
+DeclStmt -> Type Identifier ; | ArrayDeclStmt ;
+ArrayDeclStmt -> Type Identifier [ Expression ] ;
+Type -> int | bool | char
+Identifier -> _ Letter IdentifierTail
+IdentifierTail -> Letter IdentifierTail | Digit IdentifierTail | epsilon
+AssignStmt -> Identifier = Expression ; | Identifier [ Expression ] = Expression ;
+Expression -> Term ExpressionTail
+ExpressionTail -> Operator Term ExpressionTail | epsilon
+Operator -> + | - | * | / | %
+Term -> Factor TermTail
+TermTail -> Operator Factor TermTail | epsilon
+Factor -> Identifier | Constant | ( Expression )
+Constant -> Integer | Boolean | Char
+Integer -> 0 | + NonZeroDigit DigitSequence | - NonZeroDigit DigitSequence | NonZeroDigit DigitSequence
+NonZeroDigit -> 1 | 2 | 3 | 4 | 5 | 6 | 7 | 8 | 9
+DigitSequence -> Digit DigitSequence | epsilon
+Digit -> 0 | 1 | 2 | 3 | 4 | 5 | 6 | 7 | 8 | 9
+Boolean -> true | false
+Char -> ' Character '
+Character -> a | b | c | d | e | f | g | h | i | j | k | l | m | n | o | p | q | r | s | t | u | v | w | x | y | z | A | B | C | D | E | F | G | H | I | J | K | L | M | N | O | P | Q | R | S | T | U | V | W | X | Y | Z | 0 | 1 | 2 | 3 | 4 | 5 | 6 | 7 | 8 | 9 | _ | + | - | * | / | = | < | > | ! | ; | , | ( | ) | { | } | [ | ]
+IfStmt -> if ( Condition ) Block | if ( Condition ) Block else Block
+Condition -> Expression Relation Expression
+Relation -> == | != | < | > | <= | >=
+WhileStmt -> while ( Condition ) Block
+InputStmt -> readInt ( Identifier ) ; | readChar ( Identifier ) ; | readBool ( Identifier ) ;
+OutputStmt -> print ( Expression ) ;
+Letter -> a | b | c | d | e | f | g | h | i | j | k | l | m | n | o | p | q | r | s | t | u | v | w | x | y | z | A | B | C | D | E | F | G | H | I | J | K | L | M | N | O | P | Q | R | S | T | U | V | W | X | Y | Z
+
+

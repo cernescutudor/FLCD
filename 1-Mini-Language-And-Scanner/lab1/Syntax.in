@@ -1,0 +1,41 @@
+
+type ::= "int" | "char" | "bool"
+relation ::= "<" | "<=" | "==" | ">=" | ">" | "!=" | "&&" | "||"
+operator ::= "+" | "-" | "*" | "/" | "%"
+
+
+
+program ::= "begin" "{" decllist stmtlist "}" "end" ";"
+
+decllist ::= declaration | declaration decllist
+
+declaration ::= type IDENTIFIER ";" | type IDENTIFIER "[" int_constant "]" ";"
+
+stmtlist ::= stmt | stmt stmtlist
+
+stmt ::= simplstmt | structstmt
+
+simplstmt ::= assignstmt ";" | arrayassignstmt ";" | iostmt ";"
+
+assignstmt ::= IDENTIFIER "=" expression ";"
+
+arrayassignstmt ::= IDENTIFIER "[" expression "]" "=" expression ";"
+
+iostmt ::= "readInt" "(" IDENTIFIER ")" ";" | "readChar" "(" IDENTIFIER ")" ";" | "print" "(" IDENTIFIER ")" ";"
+
+structstmt ::= ifstmt | whilestmt
+
+ifstmt ::= "if" "(" condition ")" "{" stmtlist "}" ["else" "{" stmtlist "}"] 
+
+whilestmt ::= "while" "(" condition ")" "{" stmtlist "}" 
+
+factor ::= IDENTIFIER | int_constant | "(" expression ")"
+
+term ::= factor | term operator factor
+
+expression ::= term | expression operator term
+
+condition ::= expression relation expression 
+
+
+

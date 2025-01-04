@@ -1,0 +1,73 @@
+////////////////////////////// The scanning algorithm //////////////////////////////
+    input: source.txt + tokens.txt
+    output: PIF + ST + exc err (if array)
+!!! PIF - Program Internal Form , ST - Symbol Table , exc err - execution error
+    ex: 
+        program.txt
+        begin
+            var a:integer;
+                b:integer;
+                c:string;
+            a := 1;
+            b := a+1;
+            c := "Text: ";
+            write (c);
+        end
+
+        |  PIF Table
+            |  token  |  ST position  |
+            | program |       0       |
+            |   id    |       1       |
+            |    ;    |       0       |
+            |  begin  |       0       |
+            |   var   |       0       |
+            |   id    |       2       |
+            |    :    |       0       |
+            | integer |       0       |
+            |    ;    |       0       |
+            |   id    |       3       |
+            |    :    |       0       |
+            | integer |       0       |
+            |    ;    |       0       |
+            |   id    |       4       |
+            |    :    |       0       |
+            | string  |       0       |
+            |    ;    |       0       |
+            |   id    |       2       |
+            |   :=    |       0       |
+            |  const  |       0       |
+            |    ;    |       0       |
+            |   id    |       3       |
+            |   :=    |       0       |
+            |   id    |       2       |
+            |    +    |       0       |
+            |  const  |       5       |
+            |    ;    |       0       |
+            |   id    |       4       |
+            |   :=    |       0       |
+            |  const  |       6       |
+            |    ;    |       0       |
+            |  write  |       0       |
+            |    (    |       0       |
+            |   id    |       4       |
+            |    )    |       0       |
+            |   end   |       0       |
+            |    ;    |       0       |
+        
+        |  ST
+            |  ST position  |  symbol  |
+            |       1       |    txt   |
+            |       2       |     a    |
+            |       3       |     b    |
+            |       4       |     c    |
+            |       5       |     1    |
+            |       6       | "text: " |
+
+    Lexical errors
+        @ - unknown character
+        "Text" - invalid string const
+        'a - invalid char const
+        a' - invalid char const
+        'ab' - invalid char const
+
+        1a - invalid identifier

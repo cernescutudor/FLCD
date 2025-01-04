@@ -1,0 +1,89 @@
+
+
+//	ex.1
+begin {
+
+	int _a;
+	int _b;
+	int _c; 
+
+	readInt( _a );
+	readInt( _b );
+	readInt(_c);
+
+
+	if ( _a < _b ) {
+		_a = _b;
+	}
+	
+	if ( _a < _c ) {
+		_a = _c;
+
+	}
+
+	print(_a);
+
+}end;
+
+//	ex.2 verify if a number is prime
+begin{
+
+	int _n;
+	int _i;
+	_i = 2;
+	bool _isPrime;
+	_isPrime = true;
+	readInt(_n);
+
+	while ( _i < _n ) {
+		_i = _i + 1;
+		if ( _n % _i == 0 ) {
+			_isPrime = false;
+		}
+	}
+	
+	print(_isPrime);
+
+}end;
+
+
+// ex.3 sum of n numbers
+
+begin{
+	int _n;
+	int _i;
+	int _sum;
+	readInt(_n);
+	int _arr[_n];
+	_i = 0;
+	_sum = 0;
+	while ( _i < _n ) {
+		readInt(_arr[_i]);
+		_sum = _sum + _arr[_i];
+		_i = _i + 1;
+	}
+	print(_sum);
+
+}end;
+
+
+// ex.3 with 2 types of lexical errors
+
+begin{
+
+	int 1n; // lexical error, "1n" invalid identifier
+	int _i;
+	int _sum; 
+	bool _§; // lexical error, invalid character
+	readInt(1n);
+	int _arr[1n];
+	_i = 0;
+	_sum = 0;
+	while ( i < 1n ) {
+		read(_arr[_i]);
+		_sum = _sum + _arr[_i];
+		_i = _i + 1;
+	}
+	print(_sum);
+
+}end;

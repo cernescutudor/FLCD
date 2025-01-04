@@ -1,0 +1,26 @@
+begin {
+
+	int _a;
+	int _b;
+	int _c;
+
+	_a = 5;
+
+
+	readInt( _a );
+	readInt( _b );
+	readInt(_c);
+
+
+	if ( _a < _b ) {
+		_a = _b;
+	}
+
+	if ( _a < _c ) {
+		_a = _c;
+
+	}
+
+	print(_a);
+
+}end;
