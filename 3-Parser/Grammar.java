@@ -104,7 +104,9 @@ public class Grammar {
         return true;
     }
     
-
+    public HashMap<String, List<List<String>>> getProductions(){
+        return P;
+    }
     public List<List<String>> getNonterminalProductions(String nonterminal) {
         if (!N.contains(nonterminal)) {
             throw new IllegalArgumentException("Can only show productions for non-terminals");
@@ -118,6 +120,9 @@ public class Grammar {
 
     public Set<String> getTerminals() {
         return E;
+    }
+    public String getStartSymbol() {
+        return S;
     }
 
     @Override
@@ -157,7 +162,7 @@ public class Grammar {
 
     public static void main(String[] args) {
         
-        Grammar g = new Grammar("g2.txt");
+        Grammar g = new Grammar("3-Parser/g1.txt");
         g.processGrammar();
     }
 }

@@ -1,0 +1,7 @@
+N = S A B
+E = a b c d epsilon
+S = S
+P =
+S -> a A B b
+A -> c | epsilon
+B -> d | epsilon
