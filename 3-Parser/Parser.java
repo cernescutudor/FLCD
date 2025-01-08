@@ -3,6 +3,7 @@ import java.util.*;
 public class Parser {
     private Grammar G;
     private String input;
+    private int treeIndex;
     private Stack<String> stack;
     private HashMap<String, List<List<String>>> P;
     private HashMap<String, List<String>> first;
@@ -13,6 +14,7 @@ public class Parser {
         G.processGrammar();
         this.P = G.getProductions();
         System.out.println(this.P);
+        treeIndex = 1;
         computeFirst();
         computeFollow();
         computeTable();
@@ -167,9 +169,9 @@ public class Parser {
         this.stack = new Stack<>();
         this.stack.push("$");
         this.stack.push(G.getStartSymbol());
-
+        int treeIndex = 0;
         Stack<TreeNode> treeStack = new Stack<>();
-        TreeNode root = new TreeNode(G.getStartSymbol());
+        TreeNode root = new TreeNode(G.getStartSymbol(), ++treeIndex);
         treeStack.push(root);
 
         int i = 0;
@@ -178,7 +180,6 @@ public class Parser {
             System.out.println("Stack: " + stack);
             String top = stack.pop();
             TreeNode currentNode = treeStack.pop();
-
             System.out.println("TreeStack: " + treeStack);
             System.out.println("Current Input: " + input.substring(i));
 
@@ -201,14 +202,14 @@ public class Parser {
                 System.out.println("Applying production: " + top + " -> " + production);
 
                 if (production.size() == 1 && production.get(0).equals("epsilon")) {
-                    currentNode.addChild(new TreeNode("epsilon"));
+                    currentNode.addChild(new TreeNode("epsilon", ++treeIndex));
                 } else {
                     List<TreeNode> children = new ArrayList<>();
                     List<String> reversedProduction = new ArrayList<>(production);
                     Collections.reverse(reversedProduction);
 
                     for (String symbol : reversedProduction) {
-                        TreeNode childNode = new TreeNode(symbol);
+                        TreeNode childNode = new TreeNode(symbol, ++treeIndex);
                         stack.push(symbol);
                         treeStack.push(childNode);
                         children.add(childNode);
@@ -232,17 +233,44 @@ public class Parser {
 
         return root;
     }
+    private void giveIndexesToNodes(TreeNode current){
+        for(TreeNode child : current.children){
+            child.index = ++treeIndex;
+        }
+        for(TreeNode child : current.children){
+            giveIndexesToNodes(child);
+        }
+    }
+    private void furtherConstructTheTree(TreeNode current) {
+        for (int i = 0; i < current.children.size(); i++) {
+            TreeNode child = current.children.get(i);
+            child.father = current.index; // Assign the father index to the child
 
+            // Assign sibling: If not the last child, assign the next child's index
+            if (i < current.children.size() - 1) {
+                child.sibling = current.children.get(i + 1).index;
+            } else {
+                child.sibling = 0; // No sibling for the last child
+            }
+
+            furtherConstructTheTree(child); // Recursively process the child
+        }
+    }
     public static void main(String[] args) {
         Parser p = new Parser();
         System.out.println("FIRST: " + p.first);
         System.out.println("FOLLOW: " + p.follow);
         p.printParsingTable();
 
-        TreeNode parseTree = p.parseInput("adb");
+        TreeNode parseTree = p.parseInput("aabd");
         if (parseTree != null) {
             System.out.println("Parsing succeeded. Parsing tree:");
             parseTree.printTree("");
+            parseTree.index = 1;
+            p.giveIndexesToNodes(parseTree);
+            p.furtherConstructTheTree(parseTree);
+            System.out.println("INDEX | TOKEN | FATHER | SIBLING");
+            parseTree.printTreeTable();
         } else {
             System.out.println("Parsing failed.");
         }
@@ -251,10 +279,16 @@ public class Parser {
 }
 class TreeNode {
     String value;
+    int index;
+    int father;
+    int sibling;
     List<TreeNode> children;
 
-    public TreeNode(String value) {
+    public TreeNode(String value, int index) {
         this.value = value;
+        this.father = 0;
+        this.sibling = 0;
+        this.index = 0;
         this.children = new ArrayList<>();
     }
 
@@ -266,6 +300,13 @@ class TreeNode {
         System.out.println(indent + value);
         for (TreeNode child : children) {
             child.printTree(indent + "  ");
+        }
+    }
+
+    public void printTreeTable() {
+        System.out.println(index + " | " + value + " | " + father + " | " + sibling);
+        for (TreeNode child : children) {
+            child.printTreeTable();
         }
     }
 }
